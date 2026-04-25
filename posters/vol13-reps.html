@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RECON · FORGE THE REPS. — VOL.13</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+@font-face { font-family:'Rajdhani'; src:url('../fonts/Rajdhani-Bold.ttf') format('truetype'); font-weight:700; }
+@font-face { font-family:'Montserrat'; src:url('../fonts/Montserrat-VariableFont_wght.ttf') format('truetype-variations'); font-weight:100 900; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #080A0C; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+
+.poster-wrap { width: min(720px, 100vw); aspect-ratio: 720/1000; position: relative; }
+
+.poster {
+  position: relative; width: 100%; height: 100%;
+  background: #080A0C; overflow: hidden;
+  isolation: isolate; container-type: inline-size;
+}
+.hero { position: absolute; inset: 0; z-index: 1; }
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-vignette {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 90% 80% at 50% 45%, transparent 30%, rgba(8,10,12,0.55) 75%, rgba(8,10,12,0.92) 100%),
+    linear-gradient(180deg, rgba(8,10,12,0.45) 0%, transparent 25%, transparent 70%, rgba(8,10,12,0.85) 100%);
+}
+.hero-grain {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.04; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.giant-letter-wrap { position: absolute; inset: 0; z-index: 2; pointer-events: none; display: flex; align-items: center; justify-content: center; }
+.giant-letter { font-family: 'Rajdhani', sans-serif; font-weight: 700; line-height: 0.78; color: var(--accent); letter-spacing: -0.04em; }
+.hero-masked { position: absolute; inset: 0; z-index: 3; pointer-events: none; mix-blend-mode: lighten; }
+.corner { position: absolute; z-index: 5; color: var(--accent); }
+.tl { top: 32px; left: 32px; }
+.tr { top: 32px; right: 32px; }
+.bl { bottom: 142px; left: 32px; max-width: 44%; }
+.br { bottom: 230px; right: 32px; text-align: right; }
+.tl-logo { width: 156px; }
+.tl-logo img { width: 100%; height: auto; display: block; }
+.meta-row { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.mono { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); text-transform: uppercase; text-shadow: 0 1px 6px rgba(8,10,12,0.85); }
+.headline-top { position: absolute; z-index: 5; top: 64px; right: 32px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: clamp(58px, 10.5cqw, 104px); line-height: 0.88; letter-spacing: 0.005em; text-transform: uppercase; color: var(--accent); text-align: right; text-shadow: 0 2px 14px rgba(8,10,12,0.7); }
+.headline-top > div + div { margin-top: -0.04em; }
+.hairline { position: absolute; left: 32px; right: 32px; bottom: 112px; height: 1px; background: var(--accent); opacity: 0.6; z-index: 5; }
+.body { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; line-height: 1.5; color: var(--accent); margin: 0 0 16px 0; max-width: 30ch; text-wrap: pretty; letter-spacing: 0.005em; text-shadow: 0 1px 8px rgba(8,10,12,0.9); }
+.footer-eyebrow { display: flex; align-items: center; gap: 8px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 11.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); text-shadow: 0 1px 8px rgba(8,10,12,0.9); }
+.footer-eyebrow .dot { width: 5px; height: 5px; background: var(--accent); display: inline-block; }
+.locations { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); line-height: 1.35; margin-bottom: 10px; text-shadow: 0 1px 8px rgba(8,10,12,0.9); }
+.closer { position: absolute; z-index: 5; bottom: 38px; right: 32px; font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: clamp(72px, 13cqw, 132px); line-height: 0.85; letter-spacing: 0.005em; text-transform: uppercase; color: var(--accent); text-shadow: 0 2px 18px rgba(8,10,12,0.7); }
+.closer .period { display: inline-block; margin-left: 0.02em; }
+.instrument { position: absolute; z-index: 5; left: 32px; bottom: 38px; display: flex; gap: 10px; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--accent); text-shadow: 0 1px 8px rgba(8,10,12,0.9); }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin></script>
+  <script type="text/babel">
+
+const PILLARS = {
+  activate: { hex: "#2DE3C8", protocol: "ACTIVATE / CIRCULATE" },
+  renew:    { hex: "#3FA9F5", protocol: "RECON RENEW PROTOCOL" },
+  restore:  { hex: "#E85D3A", protocol: "RESTORE RED LIGHT" },
+};
+
+const CONFIG = {
+    "pillar": "restore",
+    "heroImg": "hero-vol13-reps.jpg",
+    "heroFilter": "grayscale(0.45) contrast(1.32) brightness(0.66) saturate(0.7) hue-rotate(-140deg)",
+    "subjectFilter": "grayscale(1) contrast(1.8) brightness(0.95) saturate(0)",
+    "heroObjectPosition": "42% 30%",
+    "giantLetter": "R",
+    "letterSize": "92cqw",
+    "letterTransform": "translate(-3%, 13%)",
+    "topLine1": "FORGE",
+    "topLine2": "THE",
+    "closer": "REPS",
+    "edition": "VOL.13",
+    "year": "2026",
+    "sessionCode": "RST\u201311",
+    "fileCode": "FILE 017/2026",
+    "locations": "DENVER, CO",
+    "bodyCopy": "One rep earns the next. Consistency is the only strategy that has never failed. Forge it rep by rep."
+};
+
+function Poster() {
+  const pillar = PILLARS[CONFIG.pillar] || PILLARS.renew;
+  const ACCENT = pillar.hex;
+
+  return (
+    <div className="poster-wrap">
+      <div className="poster" style={{ "--accent": ACCENT }}>
+        <div className="hero">
+          <img src={"assets/" + CONFIG.heroImg} alt="" className="hero-img"
+            style={{ filter: CONFIG.heroFilter, objectPosition: CONFIG.heroObjectPosition }} />
+          <div className="hero-vignette" />
+          <div className="hero-grain" />
+        </div>
+
+        <div className="giant-letter-wrap" style={{ opacity: 1 }}>
+          <span className="giant-letter"
+            style={{ fontSize: CONFIG.letterSize, transform: CONFIG.letterTransform }}>
+            {CONFIG.giantLetter}
+          </span>
+        </div>
+
+        <div className="hero-masked" aria-hidden="true">
+          <img src={"assets/" + CONFIG.heroImg} alt="" className="hero-img"
+            style={{ filter: CONFIG.subjectFilter, objectPosition: CONFIG.heroObjectPosition }} />
+        </div>
+
+        <div className="corner tl">
+          <div className="tl-logo"><img src="assets/recon-vertical-whiteblue.png" alt="RECON" /></div>
+        </div>
+
+        <div className="corner tr">
+          <div className="meta-row">
+            <span className="mono" style={{ fontWeight:"900" }}>{CONFIG.edition}</span>
+            <span className="mono">{CONFIG.year}</span>
+          </div>
+        </div>
+
+        <div className="headline-top">
+          <div>{CONFIG.topLine1}</div>
+          <div>{CONFIG.topLine2}</div>
+        </div>
+
+        <div className="hairline" />
+
+        <div className="corner bl">
+          <p className="body">{CONFIG.bodyCopy}</p>
+          <div className="footer-eyebrow">
+            <span className="dot" />
+            <span>{pillar.protocol}</span>
+          </div>
+        </div>
+
+        <div className="corner br">
+          <div className="locations">
+            {CONFIG.locations.split("/").map((loc, i) => <div key={i}>{loc.trim()}</div>)}
+          </div>
+        </div>
+
+        <div className="closer">{CONFIG.closer}<span className="period">.</span></div>
+
+        <div className="instrument">
+          <span className="mono">SESSION {CONFIG.sessionCode}</span>
+          <span className="mono">·</span>
+          <span className="mono">{CONFIG.fileCode}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<Poster />);
+
+  </script>
+</body>
+</html>
