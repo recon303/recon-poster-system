@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RECON · Editorial Poster System Pack</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family:'Rajdhani'; src:url('fonts/Rajdhani-Bold.ttf') format('truetype'); font-weight:700; }
+    @font-face { font-family:'Montserrat'; src:url('fonts/Montserrat-VariableFont_wght.ttf') format('truetype-variations'); font-weight:100 900; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { font-size: 16px; }
+    body {
+      margin: 0;
+      background: #080A0C;
+      color: #fff;
+      font-family: 'Montserrat', system-ui, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .header {
+      padding: 56px 64px 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .header-logo img { height: 64px; display: block; }
+    .header-meta { text-align: right; }
+    .header-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 38px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin: 0 0 8px;
+    }
+    .header-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+    }
+
+    /* PILLAR LEGEND */
+    .legend {
+      display: flex;
+      gap: 32px;
+      padding: 24px 64px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .legend-item { display: flex; align-items: center; gap: 10px; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .legend-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* GRID */
+    .grid-section { padding: 48px 64px 80px; }
+    .grid-section-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin: 0 0 28px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    /* CARD */
+    .card {
+      display: block;
+      text-decoration: none;
+      background: #0D1014;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: border-color 0.18s, transform 0.18s;
+    }
+    .card:hover {
+      border-color: rgba(255,255,255,0.22);
+      transform: translateY(-3px);
+    }
+
+    .card-preview {
+      width: 100%;
+      aspect-ratio: 720/1000;
+      background: #080A0C;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Mini poster thumbnail */
+    .card-thumb {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-thumb-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+    .card-thumb-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 90% 80% at 50% 45%, transparent 30%, rgba(8,10,12,0.55) 75%, rgba(8,10,12,0.92) 100%),
+        linear-gradient(180deg, rgba(8,10,12,0.45) 0%, transparent 25%, transparent 70%, rgba(8,10,12,0.85) 100%);
+    }
+    .card-thumb-closer {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 28px;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      line-height: 1;
+      text-shadow: 0 2px 12px rgba(8,10,12,0.8);
+    }
+    .card-thumb-headline {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      text-align: right;
+      line-height: 1.1;
+      letter-spacing: 0.03em;
+      text-shadow: 0 1px 6px rgba(8,10,12,0.9);
+    }
+    .card-thumb-letter {
+      position: absolute;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 100px;
+      line-height: 0.78;
+      letter-spacing: -0.04em;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.6;
+    }
+    .card-thumb-no-img {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .card-body {
+      padding: 14px 16px 16px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .card-vol {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .card-name {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1;
+      color: #fff;
+    }
+    .card-meta {
+      margin-top: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      display: flex;
+      justify-content: space-between;
+    }
+    .card-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+    .card-status.ready { background: rgba(45,227,200,0.12); color: #2DE3C8; }
+    .card-status.pending { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.3); }
+
+    /* TOOLS SECTION */
+    .tools { padding: 0 64px 80px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .tool-card {
+      background: #0D1014;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 4px;
+      padding: 24px;
+      flex: 1;
+      min-width: 200px;
+    }
+    .tool-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #fff;
+      margin: 0 0 6px;
+    }
+    .tool-desc {
+      font-size: 12px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.4);
+      margin: 0 0 14px;
+    }
+    .tool-cmd {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 3px;
+      padding: 8px 10px;
+      color: rgba(255,255,255,0.7);
+      display: block;
+    }
+
+    /* FOOTER */
+    .footer {
+      padding: 32px 64px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-logo">
+    <img src="assets/recon-vertical-whiteblue.png" alt="RECON">
+  </div>
+  <div class="header-meta">
+    <h1 class="header-title">Editorial Poster System</h1>
+    <p class="header-sub">14 Concepts &nbsp;·&nbsp; 3 Pillars &nbsp;·&nbsp; 2026 Series</p>
+  </div>
+</header>
+
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-dot" style="background:#3FA9F5"></div>
+    <span class="legend-label">Renew Blue</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:#2DE3C8"></div>
+    <span class="legend-label">Activate Teal</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:#E85D3A"></div>
+    <span class="legend-label">Restore Ember</span>
+  </div>
+  <div class="legend-item" style="margin-left:auto">
+    <span class="legend-label" style="color:rgba(255,255,255,0.25)">Click any poster to open full size</span>
+  </div>
+</div>
+
+<section class="grid-section">
+  <p class="grid-section-title">All 14 Concepts — 2026 Series</p>
+  <div class="grid" id="poster-grid"></div>
+</section>
+
+<section class="grid-section" style="padding-top:0">
+  <p class="grid-section-title">Tools</p>
+  <div class="tools">
+    <div class="tool-card">
+      <h3 class="tool-title">Generate Images</h3>
+      <p class="tool-desc">Run this after setting your Google AI Studio API key. Generates the 10 new hero images via Gemini Imagen (Nano Banana).</p>
+      <code class="tool-cmd">GOOGLE_API_KEY=your_key python3 generate_images.py</code>
+    </div>
+    <div class="tool-card">
+      <h3 class="tool-title">Rebuild Posters</h3>
+      <p class="tool-desc">Re-generates all 14 standalone HTML poster files. Run after adding new images or changing config.</p>
+      <code class="tool-cmd">python3 build_posters.py</code>
+    </div>
+    <div class="tool-card">
+      <h3 class="tool-title">Full Design Canvas</h3>
+      <p class="tool-desc">Opens all 14 posters side-by-side in the pan/zoom design canvas for system-level review.</p>
+      <code class="tool-cmd"><a href="../RECON Poster Template.html" style="color:inherit">Open RECON Poster Template.html</a></code>
+    </div>
+    <div class="tool-card">
+      <h3 class="tool-title">Image Prompts</h3>
+      <p class="tool-desc">All 10 Nano Banana prompts for the new hero images, formatted for direct paste into the tool.</p>
+      <code class="tool-cmd"><a href="IMAGE_PROMPTS.md" style="color:inherit">Open IMAGE_PROMPTS.md</a></code>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <span class="footer-text">RECON Wellness &nbsp;·&nbsp; Editorial Poster System &nbsp;·&nbsp; 2026</span>
+  <span class="footer-text">14 Posters &nbsp;·&nbsp; Rajdhani 700 &nbsp;·&nbsp; RECON Base #080A0C</span>
+</footer>
+
+<script>
+const POSTERS = [
+  { id:"vol04-output",  edition:"VOL.04", name:"OWN THE OUTPUT.",   pillar:"renew",    img:"hero-kettlebell.jpg",       letter:"O", ready:true  },
+  { id:"vol05-break",   edition:"VOL.05", name:"BREAK THE LINE.",   pillar:"activate", img:"hero-sprinter.jpg",         letter:"L", ready:true  },
+  { id:"vol06-view",    edition:"VOL.06", name:"EARN THE VIEW.",    pillar:"renew",    img:"hero-mtb.jpg",              letter:"V", ready:true  },
+  { id:"vol07-burn",    edition:"VOL.07", name:"BURN THE LANE.",    pillar:"restore",  img:"hero-sprinter-stadium.jpg", letter:"L", ready:true  },
+  { id:"vol08-form",    edition:"VOL.08", name:"HOLD THE FORM.",    pillar:"activate", img:"hero-vol08-form.jpg",       letter:"F", ready:false },
+  { id:"vol09-edge",    edition:"VOL.09", name:"FIND THE EDGE.",    pillar:"restore",  img:"hero-vol09-edge.jpg",       letter:"E", ready:false },
+  { id:"vol10-base",    edition:"VOL.10", name:"BUILD THE BASE.",   pillar:"activate", img:"hero-vol10-base.jpg",       letter:"B", ready:false },
+  { id:"vol11-pace",    edition:"VOL.11", name:"PUSH THE PACE.",    pillar:"renew",    img:"hero-vol11-pace.jpg",       letter:"P", ready:false },
+  { id:"vol12-drop",    edition:"VOL.12", name:"TRUST THE DROP.",   pillar:"activate", img:"hero-vol12-drop.jpg",       letter:"D", ready:false },
+  { id:"vol13-reps",    edition:"VOL.13", name:"FORGE THE REPS.",   pillar:"restore",  img:"hero-vol13-reps.jpg",       letter:"R", ready:false },
+  { id:"vol14-moment",  edition:"VOL.14", name:"CLAIM THE MOMENT.", pillar:"renew",    img:"hero-vol14-moment.jpg",     letter:"M", ready:false },
+  { id:"vol15-grade",   edition:"VOL.15", name:"RISE THE GRADE.",   pillar:"renew",    img:"hero-vol15-grade.jpg",      letter:"G", ready:false },
+  { id:"vol16-tempo",   edition:"VOL.16", name:"KEEP THE TEMPO.",   pillar:"restore",  img:"hero-vol16-tempo.jpg",      letter:"T", ready:false },
+  { id:"vol17-system",  edition:"VOL.17", name:"WORK THE SYSTEM.",  pillar:"activate", img:"hero-vol17-system.jpg",     letter:"S", ready:false },
+];
+
+const PILLAR_COLORS = {
+  renew:    "#3FA9F5",
+  activate: "#2DE3C8",
+  restore:  "#E85D3A",
+};
+
+const grid = document.getElementById("poster-grid");
+
+POSTERS.forEach(p => {
+  const color = PILLAR_COLORS[p.pillar];
+  const imgPath = "assets/" + p.img;
+
+  const a = document.createElement("a");
+  a.href = "posters/" + p.id + ".html";
+  a.className = "card";
+  a.target = "_blank";
+
+  a.innerHTML = `
+    <div class="card-preview">
+      <div class="card-thumb">
+        ${p.ready
+          ? `<img class="card-thumb-img" src="${imgPath}" alt="" style="filter: grayscale(0.5) contrast(1.2) brightness(0.7)">`
+          : `<div class="card-thumb-no-img">Image pending generation</div>`
+        }
+        <div class="card-thumb-overlay"></div>
+        <div class="card-thumb-letter" style="color:${color}">${p.letter}</div>
+        <div class="card-thumb-headline" style="color:${color}">
+          ${p.name.replace(/ THE /, '<br>THE<br>').split('.')[0].split(' ').slice(0,1).join('')}
+          <br>THE
+        </div>
+        <div class="card-thumb-closer" style="color:${color}">
+          ${p.name.split(' ').pop().replace('.', '')}<span style="margin-left:0.02em">.</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <div class="card-vol" style="color:${color}">${p.edition}</div>
+        <span class="card-status ${p.ready ? 'ready' : 'pending'}">${p.ready ? '● READY' : '○ NEEDS IMAGE'}</span>
+      </div>
+      <div class="card-name">${p.name}</div>
+      <div class="card-meta">
+        <span>${p.pillar.toUpperCase()}</span>
+        <span>${p.letter}</span>
+      </div>
+    </div>
+  `;
+
+  grid.appendChild(a);
+});
+</script>
+
+</body>
+</html>
